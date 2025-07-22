@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+  <meta charset="UTF-8" />
+  <title>Instagram Unfollowers Checker</title>
+</head>
+<body>
+  <h1>Instagram Unfollowers Checker</h1>
+  <form id="uploadForm">
+    <label>Followers JSON: <input type="file" name="followers" required /></label><br><br>
+    <label>Following JSON: <input type="file" name="following" required /></label><br><br>
+    <button type="submit">Check</button>
+  </form>
+
+  <h2>Not Following You Back:</h2>
+  <ul id="resultList"></ul>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+
+      const response = await fetch('/check', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      const list = document.getElementById('resultList');
+      list.innerHTML = '';
+
+      if (result.not_following_back) {
+        result.not_following_back.forEach(user => {
+          const li = document.createElement('li');
+          li.textContent = user;
+          list.appendChild(li);
+        });
+      } else {
+        list.innerHTML = `<li>Error: ${result.error}</li>`;
+      }
+    });
+  </script>
+</body>
+</html>
