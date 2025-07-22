@@ -1,57 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Instagram Unfollowers Checker</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  <h1>Instagram Unfollowers Checker</h1>
+  <form id="uploadForm">
+    <label>Followers JSON: <input type="file" name="followers" required /></label><br><br>
+    <label>Following JSON: <input type="file" name="following" required /></label><br><br>
+    <button type="submit">Check</button>
+  </form>
 
-  <!-- 🔔 Instruction Modal -->
-  <div id="instructionModal" class="modal">
-    <div class="modal-content">
-      <h2>How to Get Your Instagram Data</h2>
-      <ol>
-        <li>Open Instagram (app or browser).</li>
-        <li>Go to <strong>Settings → Privacy and Security → Download Data</strong>.</li>
-        <li>Enter your email and request a download link.</li>
-        <li>Check your email, download the ZIP, and extract it.</li>
-        <li>Open the <code>followers_and_following</code> folder and upload:
-          <ul>
-            <li><code>followers_1.json</code></li>
-            <li><code>following.json</code></li>
-          </ul>
-        </li>
-      </ol>
-      <button onclick="closeModal()">Got it!</button>
-    </div>
-  </div>
-
-  <main>
-    <h1>Instagram Unfollowers Checker</h1>
-    <form id="uploadForm">
-      <label>Followers JSON: <input type="file" name="followers" required /></label><br><br>
-      <label>Following JSON: <input type="file" name="following" required /></label><br><br>
-      <button type="submit">Check</button>
-    </form>
-
-    <h2>Not Following You Back:</h2>
-    <ul id="resultList"></ul>
-  </main>
+  <h2>Not Following You Back:</h2>
+  <ul id="resultList"></ul>
 
   <script>
-    // Show modal on page load
-    window.onload = function() {
-      document.getElementById('instructionModal').style.display = 'flex';
-    };
-
-    // Close modal
-    function closeModal() {
-      document.getElementById('instructionModal').style.display = 'none';
-    }
-
-    // Upload form logic
     document.getElementById('uploadForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
@@ -63,6 +30,7 @@
       });
 
       const result = await response.json();
+
       const list = document.getElementById('resultList');
       list.innerHTML = '';
 
@@ -77,6 +45,5 @@
       }
     });
   </script>
-
 </body>
 </html>
